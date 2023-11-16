@@ -1,4 +1,15 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import DocumentsListBlock from '@components/Documents/DocumentsListBlock.vue'
+import DocumentsView from '@components/Documents/DocumentsView.vue'
+import type { IDocument } from '@models/index'
+
+import { ref } from 'vue'
+
+const activeDocument = ref<IDocument | null>(null)
+const onOpenDocument = (document: IDocument) => {
+  activeDocument.value = document
+}
+</script>
 
 <template>
   <div class="DocumentsPage">
@@ -7,8 +18,12 @@
       <div class="DocumentsPage-header__username">Username</div>
     </div>
     <div class="DocumentsPage-body">
-      <div class="DocumentsPage-body__left"></div>
-      <div class="DocumentsPage-body__right"></div>
+      <div class="DocumentsPage-body__left">
+        <DocumentsListBlock :activeDocument="activeDocument" @openDocument="onOpenDocument" />
+      </div>
+      <div class="DocumentsPage-body__right">
+        <DocumentsView :document="activeDocument" />
+      </div>
     </div>
   </div>
 </template>
@@ -40,8 +55,12 @@
     flex-grow: 1;
 
     &__left {
-      width: 20%;
-      border-right: 1px solid #e0e0e0;
+      border-right: 1px solid var(--light-gray);
+      padding: 20px 27px;
+    }
+
+    &__right {
+      flex-grow: 1;
     }
   }
 }

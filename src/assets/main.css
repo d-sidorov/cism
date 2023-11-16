@@ -1,1 +1,11 @@
 @import './base.css';
+:root {
+  --blue: #0d6efd;
+  --red: #dc3545;
+  --gray: #6c757d;
+  --light-gray: #e0e0e0;
+}
+
+.full-height {
+  height: 100%;
+}
