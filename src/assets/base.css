@@ -3,7 +3,7 @@
   font-style: normal;
   src:
     local('Montserrat'),
-    url(fonts/Montserrat.ttf) format('truetype');
+    url(/fonts/Montserrat.ttf) format('truetype');
 }
 
 html {
