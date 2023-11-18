@@ -7,6 +7,7 @@ import { useUIStore } from './UIStore'
 export const useDocumentsStore = defineStore('documents', {
   state: () => ({
     documents: [] as IDocument[],
+    activeDocument: null as IDocument | null,
     isDocumentsLoading: false,
     documentsLoadingError: null as null | Error
   }),
@@ -14,6 +15,8 @@ export const useDocumentsStore = defineStore('documents', {
   actions: {
     async getDocuments(search: string | null) {
       const UIStore = useUIStore()
+      if (this.activeDocument) this.setActiveDocument(null)
+
       try {
         this.isDocumentsLoading = true
 
@@ -25,6 +28,17 @@ export const useDocumentsStore = defineStore('documents', {
       } finally {
         this.isDocumentsLoading = false
       }
+    },
+
+    setActiveDocument(document: IDocument | null) {
+      this.activeDocument = document
+    },
+
+    deleteDocument(id: number) {
+      const index = this.documents.findIndex((document) => document.id === id)
+      if (index !== -1) this.documents.splice(index, 1)
+
+      if (id === this.activeDocument?.id) this.setActiveDocument(null)
     }
   }
 })

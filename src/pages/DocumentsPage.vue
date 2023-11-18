@@ -1,14 +1,6 @@
 <script setup lang="ts">
 import DocumentsListBlock from '@components/Documents/DocumentsListBlock.vue'
 import DocumentsView from '@components/Documents/DocumentsView.vue'
-import type { IDocument } from '@models/index'
-
-import { ref } from 'vue'
-
-const activeDocument = ref<IDocument | null>(null)
-const onOpenDocument = (document: IDocument) => {
-  activeDocument.value = document
-}
 </script>
 
 <template>
@@ -19,10 +11,10 @@ const onOpenDocument = (document: IDocument) => {
     </div>
     <div class="DocumentsPage-body">
       <div class="DocumentsPage-body__left">
-        <DocumentsListBlock :activeDocument="activeDocument" @openDocument="onOpenDocument" />
+        <DocumentsListBlock />
       </div>
       <div class="DocumentsPage-body__right">
-        <DocumentsView :document="activeDocument" />
+        <DocumentsView />
       </div>
     </div>
   </div>

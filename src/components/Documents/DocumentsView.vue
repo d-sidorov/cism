@@ -1,33 +1,51 @@
 <script setup lang="ts">
-import type { IDocument } from '@models/index'
 import MyImage from '@components/UI/MyImage.vue'
 import MyButton from '@components/UI/MyButton.vue'
+import downloadTxtFile from '@utils/downloadTxtFile'
+import { useDocumentsStore } from '@stores/DocumentsStore'
+import { computed } from 'vue'
 
-defineProps<{ document: IDocument | null }>()
+const documentsStore = useDocumentsStore()
+
+const activeDocument = computed(() => documentsStore.activeDocument)
+
+const downloadDocument = () => {
+  if (!activeDocument.value) return
+  downloadTxtFile(activeDocument.value?.name, activeDocument.value?.description)
+}
+
+const deleteDocument = () => {
+  if (!activeDocument.value) return
+  documentsStore.deleteDocument(activeDocument.value?.id)
+}
 </script>
 
 <template>
-  <div class="DocumentsView">
-    <div v-if="!document" class="DocumentsView__empty">
-      Выберите документ, чтобы посмотреть его содержимое
-    </div>
+  <div class="DocumentsView" :class="{ DocumentsView__empty: !activeDocument }">
+    <div v-if="!activeDocument">Выберите документ, чтобы посмотреть его содержимое</div>
     <div v-else class="DocumentsView-block">
       <div class="DocumentsView-img">
-        <MyImage :src="document.image" />
+        <MyImage :src="activeDocument.image" />
       </div>
       <div class="DocumentsView-info">
         <div class="DocumentsView-info__section">
-          <div class="DocumentsView-info__label">{{ document.name }}</div>
+          <div class="DocumentsView-info__label">{{ activeDocument.name }}</div>
           <div class="DocumentsView-info__actions">
-            <MyButton class="DocumentsView-info__saveBtn">Скачать</MyButton>
-            <MyButton class="DocumentsView-info__deleteBtn" :disabled="!document.image">
+            <MyButton class="DocumentsView-info__saveBtn" @click="downloadDocument">
+              Скачать
+            </MyButton>
+            <MyButton
+              class="DocumentsView-info__deleteBtn"
+              :disabled="!activeDocument.image"
+              @click="deleteDocument"
+            >
               Удалить
             </MyButton>
           </div>
         </div>
         <div class="DocumentsView-info__section">
           <div class="DocumentsView-info__label">Описание:</div>
-          <div class="DocumentsView-info__description">{{ document.description }}</div>
+          <div class="DocumentsView-info__description">{{ activeDocument.description }}</div>
         </div>
       </div>
     </div>
@@ -45,6 +63,7 @@ defineProps<{ document: IDocument | null }>()
 
   &__empty {
     font-size: 14px;
+    align-items: center;
   }
 
   &-block {

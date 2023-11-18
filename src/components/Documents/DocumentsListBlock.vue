@@ -9,15 +9,18 @@ import { debounce } from '@utils/debounce'
 import { storeToRefs } from 'pinia'
 
 const documentsStore = useDocumentsStore()
-const { documents, isDocumentsLoading, documentsLoadingError } = storeToRefs(documentsStore)
+const { documents, activeDocument, isDocumentsLoading, documentsLoadingError } =
+  storeToRefs(documentsStore)
+
 const searchString = ref<string>('')
 const getDocuments = () => {
   documentsStore.getDocuments(searchString.value)
 }
 const debounceGetDocuments = debounce(getDocuments, 1000)
 
-defineProps<{ activeDocument: IDocument | null }>()
-defineEmits<{ (e: 'openDocument', document: IDocument): void }>()
+const setActiveDocument = (document: IDocument) => {
+  documentsStore.setActiveDocument(document)
+}
 
 watch(searchString, () => {
   debounceGetDocuments()
@@ -48,7 +51,7 @@ onMounted(() => {
         <DocumentsList
           :documents="documents"
           :activeDocument="activeDocument"
-          @openDocument="$emit('openDocument', $event)"
+          @setActiveDocument="setActiveDocument"
         />
       </div>
     </div>

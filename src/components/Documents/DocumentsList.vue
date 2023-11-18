@@ -3,7 +3,7 @@ import type { IDocument } from '@models/index'
 import DocumentsItem from './DocumentsItem.vue'
 
 defineProps<{ documents: IDocument[]; activeDocument: IDocument | null }>()
-defineEmits<{ (e: 'openDocument', document: IDocument): void }>()
+defineEmits<{ (e: 'setActiveDocument', document: IDocument): void }>()
 </script>
 
 <template>
@@ -15,7 +15,7 @@ defineEmits<{ (e: 'openDocument', document: IDocument): void }>()
           :key="document.id"
           :document="document"
           :isActive="document.id === activeDocument?.id"
-          @click="$emit('openDocument', document)"
+          @click="$emit('setActiveDocument', document)"
         />
       </div>
     </div>
