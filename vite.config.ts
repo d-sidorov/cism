@@ -13,7 +13,10 @@ export default defineConfig({
       '@views': path.resolve(__dirname, './src/views'),
       '@pages': path.resolve(__dirname, './src/pages'),
       '@components': path.resolve(__dirname, './src/components'),
-      '@models': path.resolve(__dirname, './src/models')
+      '@models': path.resolve(__dirname, './src/models'),
+      '@stores': path.resolve(__dirname, './src/stores'),
+      '@api': path.resolve(__dirname, './src/api'),
+      '@utils': path.resolve(__dirname, './src/utils')
     }
   }
 })

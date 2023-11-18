@@ -1,5 +1,21 @@
+<script setup lang="ts">
+import { computed } from 'vue'
+
+const props = defineProps<{ modelValue: string | number }>()
+const emit = defineEmits<{ (e: 'update:modelValue', value: string | number): void }>()
+
+const model = computed({
+  get() {
+    return props.modelValue
+  },
+  set(value: string | number) {
+    emit('update:modelValue', value)
+  }
+})
+</script>
+
 <template>
-  <input class="MyInput" v-bind="$attrs" />
+  <input class="MyInput" v-bind="$attrs" v-model="model" />
 </template>
 
 <style scoped lang="scss">

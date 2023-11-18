@@ -1,10 +1,31 @@
 <script setup lang="ts">
 import MyInput from '@components/UI/MyInput.vue'
 import DocumentsList from './DocumentsList.vue'
+import MySpinner from '@components/UI/MySpinner.vue'
 import type { IDocument } from '@models/index'
+import { useDocumentsStore } from '@stores/DocumentsStore'
+import { onMounted, ref, watch } from 'vue'
+import { debounce } from '@utils/debounce'
+import { storeToRefs } from 'pinia'
+
+const documentsStore = useDocumentsStore()
+const { documents, isDocumentsLoading, documentsLoadingError } = storeToRefs(documentsStore)
+const searchString = ref<string>('')
+const getDocuments = () => {
+  documentsStore.getDocuments(searchString.value)
+}
+const debounceGetDocuments = debounce(getDocuments, 1000)
 
 defineProps<{ activeDocument: IDocument | null }>()
 defineEmits<{ (e: 'openDocument', document: IDocument): void }>()
+
+watch(searchString, () => {
+  debounceGetDocuments()
+})
+
+onMounted(() => {
+  getDocuments()
+})
 </script>
 
 <template>
@@ -12,14 +33,20 @@ defineEmits<{ (e: 'openDocument', document: IDocument): void }>()
     <div class="DocumentsListBlock-section">
       <p class="DocumentsListBlock-section__label">Поиск документа</p>
       <div class="DocumentsListBlock-section__body">
-        <MyInput placeholder="Введите ID документа" />
+        <MyInput placeholder="Введите ID документа" v-model="searchString" />
       </div>
     </div>
 
-    <div class="DocumentsListBlock-section DocumentsListBlock-section full-height">
+    <div class="DocumentsListBlock-section DocumentsListBlock-section__documents full-height">
       <p class="DocumentsListBlock-section__label">Результаты</p>
-      <div class="DocumentsListBlock-section__body full-height">
+      <MySpinner v-if="isDocumentsLoading" :size="30" />
+
+      <div
+        v-else-if="!isDocumentsLoading && !documentsLoadingError"
+        class="DocumentsListBlock-section__body full-height"
+      >
         <DocumentsList
+          :documents="documents"
           :activeDocument="activeDocument"
           @openDocument="$emit('openDocument', $event)"
         />
@@ -43,6 +70,10 @@ defineEmits<{ (e: 'openDocument', document: IDocument): void }>()
 
     &__label {
       font-weight: bold;
+    }
+
+    &__documents {
+      width: 280px;
     }
   }
 }
