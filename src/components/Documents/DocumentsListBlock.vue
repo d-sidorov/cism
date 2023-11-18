@@ -80,4 +80,13 @@ onMounted(() => {
     }
   }
 }
+@media screen and (max-width: 768px) {
+  .DocumentsListBlock {
+    &-section {
+      &__documents {
+        width: auto;
+      }
+    }
+  }
+}
 </style>

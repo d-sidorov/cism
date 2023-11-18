@@ -56,4 +56,18 @@ import DocumentsView from '@components/Documents/DocumentsView.vue'
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .DocumentsPage {
+    padding: 20px;
+
+    &-body {
+      flex-direction: column;
+
+      &__left {
+        min-height: 80%;
+      }
+    }
+  }
+}
 </style>

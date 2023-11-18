@@ -115,4 +115,41 @@ const deleteDocument = () => {
     }
   }
 }
+
+@media screen and (max-width: 768px) {
+  .DocumentsView {
+    &-block {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    &-img {
+      min-width: auto;
+      height: auto;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .DocumentsView {
+    &-block {
+      flex-direction: row;
+      max-width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .DocumentsView {
+    &-block {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    &-img {
+      min-width: auto;
+      height: auto;
+    }
+  }
+}
 </style>

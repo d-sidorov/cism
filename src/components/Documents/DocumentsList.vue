@@ -44,4 +44,10 @@ defineEmits<{ (e: 'setActiveDocument', document: IDocument): void }>()
     width: 100%;
   }
 }
+
+@media screen and (max-width: 768px) {
+  .DocumentsList {
+    height: 300px;
+  }
+}
 </style>
