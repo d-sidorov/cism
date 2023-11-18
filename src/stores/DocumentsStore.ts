@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import type { IDocument } from '@models/index'
 
 import { getDocuments as fetchGetDocuments } from '@api/documents'
+import { useUIStore } from './UIStore'
 
 export const useDocumentsStore = defineStore('documents', {
   state: () => ({
@@ -12,6 +13,7 @@ export const useDocumentsStore = defineStore('documents', {
 
   actions: {
     async getDocuments(search: string | null) {
+      const UIStore = useUIStore()
       try {
         this.isDocumentsLoading = true
 
@@ -19,6 +21,7 @@ export const useDocumentsStore = defineStore('documents', {
         this.documents.splice(0, this.documents.length, ...result)
       } catch (err) {
         this.documentsLoadingError = new Error(err as string)
+        UIStore.showError(err as string)
       } finally {
         this.isDocumentsLoading = false
       }
